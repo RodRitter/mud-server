@@ -22,15 +22,15 @@ const io = new Server(server, {
 io.on("connection", (ioSocket) => {
     console.log("IO User Connected");
 
-    ioSocket.on("connect-game", (gameKey) => {
-        const Game = Games[gameKey];
+    ioSocket.on("connect-game", (connectKey) => {
+        const Game = Games[connectKey];
         if (Game) {
             const telnet = new Game(ioSocket);
-            telnet.connect(gameKey);
+            telnet.connect(connectKey);
         } else {
             ioSocket.emit("error", {
                 key: "non-game",
-                message: `Trying to connect to non-existant game: "${gameKey}"`,
+                message: `Trying to connect to non-existant game: "${connectKey}"`,
                 data: { games: Object.keys(Games) },
             });
         }

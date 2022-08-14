@@ -1,6 +1,9 @@
 # MUD Server
 
-## Bringing MUD's to the Web
+## Features
+
+-   Modular Telnet connectors
+-   Automatic ANSI to HTML conversion
 
 ### Usage
 
