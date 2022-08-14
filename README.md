@@ -1,6 +1,8 @@
-# tdb
+# MUD Server
 
-## Usage
+## Bringing MUD's to the Web
+
+### Usage
 
 ```
 import io from "socket.io-client";
@@ -28,9 +30,9 @@ socket.on("connected", () => {
 });
 ```
 
-## Events
+### Events
 
-### Sent by Client
+#### Sent by Client
 
 ```
 socket.emit("connect-game", "game-name"); // Connect the socket for an existing game on the server
@@ -38,7 +40,7 @@ socket.emit("write", "equip sword"); // Send a command
 socket.emit("close"); // Close the socket
 ```
 
-### Events: Received by Client
+#### Events: Received by Client
 
 ```
 socket.on("connected", () => {}); // When a game has successfully connected
