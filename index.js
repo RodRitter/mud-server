@@ -6,8 +6,10 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 
 const ProcRealmsConnector = require("./src/connectors/ProcRealmsConnector");
+const LumenEtUmbraConnector = require("./src/connectors/LumenEtUmbraConnector");
 
 const Games = {
+    "lumen-et-umbra": LumenEtUmbraConnector,
     "procedural-realms": ProcRealmsConnector,
 };
 
@@ -24,8 +26,9 @@ io.on("connection", (ioSocket) => {
 
     ioSocket.on("connect-game", (connectKey) => {
         const Game = Games[connectKey];
-        if (Game) {
-            const telnet = new Game(ioSocket);
+        const telnet = new Game(ioSocket);
+
+        if (Game && !telnet.connected) {
             telnet.connect(connectKey);
         } else {
             ioSocket.emit("error", {

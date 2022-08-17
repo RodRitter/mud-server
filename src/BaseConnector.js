@@ -1,9 +1,6 @@
 const TelnetInput = require("telnet-stream").TelnetInput;
 const TelnetOutput = require("telnet-stream").TelnetOutput;
 const net = require("net");
-var AnsiToHtmlConverter = require("ansi-to-html");
-var convert = new AnsiToHtmlConverter();
-
 class BaseConnector {
     constructor(ioSocket) {
         this.ioSocket = ioSocket;
@@ -35,9 +32,35 @@ class BaseConnector {
             this.onClose();
         });
 
-        // App Events
+        // App Events: Send
+        this.writeDo = (option) => {
+            telnetOutput.writeDo(option);
+        };
+
+        this.writeDont = (option) => {
+            telnetOutput.writeDont(option);
+        };
+
+        this.writeWill = (option) => {
+            telnetOutput.writeWill(option);
+        };
+
+        this.writeWont = (option) => {
+            telnetOutput.writeWont(option);
+        };
+
+        this.writeSub = (option, buffer) => {
+            telnetOutput.writeSub(option, buffer);
+        };
+
+        this.writeCommand = (option) => {
+            telnetOutput.writeCommand(option);
+        };
+
+        // App Events: Received
         telnetInput.on("data", (data) => {
-            this.onReceivedData(convert.toHtml(data.toString("utf8")));
+            const ansiData = data.toString("utf8");
+            this.onReceivedData(ansiData, this.ioSocket);
         });
 
         telnetInput.on("command", (command) => {
@@ -98,7 +121,7 @@ class BaseConnector {
     }
 
     onDo(option) {
-        console.log(`[BaseConnector] Event: DO   ${option}`);
+        console.log(`[BaseConnector] Event: DO ${option}`);
     }
 
     onDont(option) {

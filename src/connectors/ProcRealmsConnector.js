@@ -1,4 +1,6 @@
 const BaseConnector = require("../BaseConnector");
+var AnsiToHtmlConverter = require("ansi-to-html");
+var convert = new AnsiToHtmlConverter();
 
 class ProcRealmsConnector extends BaseConnector {
     constructor(ioSocket) {
@@ -20,6 +22,11 @@ class ProcRealmsConnector extends BaseConnector {
                 data: JSON.parse(data),
             });
         }
+    }
+
+    onReceivedData(ansiData, ioSocket) {
+        const html = convert.toHtml(ansiData);
+        this.ioSocket.emit("buffer", html);
     }
 }
 
