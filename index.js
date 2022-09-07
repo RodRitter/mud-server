@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
 const http = require("http");
-const server = http.createServer(app);
 const { Server } = require("socket.io");
 const cors = require("cors");
+
+const server = http.createServer(app);
 
 const ProcRealmsConnector = require("./src/connectors/ProcRealmsConnector");
 const LumenEtUmbraConnector = require("./src/connectors/LumenEtUmbraConnector");
@@ -40,6 +41,7 @@ io.on("connection", (ioSocket) => {
     });
 });
 
-server.listen(3001, () => {
-    console.log("listening on *:3001");
+const PORT = 80;
+server.listen(PORT, () => {
+    console.log(`listening on *:${PORT}`);
 });
