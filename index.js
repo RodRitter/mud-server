@@ -17,7 +17,7 @@ app.use(cors());
 
 const io = new Server(server, {
     cors: {
-        origin: "https://grimoire-ashen.vercel.app/",
+        origin: "https://grimoire-ashen.vercel.app",
     },
 });
 
