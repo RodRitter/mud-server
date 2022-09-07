@@ -10,7 +10,9 @@ class BaseConnector {
     }
 
     connect(gameKey) {
-        const telnetInput = (this.telnetInput = new TelnetInput());
+        const telnetInput = (this.telnetInput = new TelnetInput({
+            bufferSize: 16384,
+        }));
         const telnetOutput = (this.telnetOutput = new TelnetOutput());
 
         let telnetSocket = (this.telnetSocket = net
