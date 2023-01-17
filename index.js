@@ -6,42 +6,24 @@ const cors = require("cors");
 
 const server = http.createServer(app);
 
-const ProcRealmsConnector = require("./src/connectors/ProcRealmsConnector");
-const LumenEtUmbraConnector = require("./src/connectors/LumenEtUmbraConnector");
-
-const Games = {
-    "lumen-et-umbra": LumenEtUmbraConnector,
-    "procedural-realms": ProcRealmsConnector,
-};
+const TestConnector = require("./src/connectors/TestConnector");
 
 app.use(cors());
 
 const io = new Server(server, {
     cors: {
-        origin: "https://grimoire-ashen.vercel.app",
+        origin: "http://localhost:3000",
     },
 });
 
 io.on("connection", (ioSocket) => {
     console.log("IO User Connected");
-
-    ioSocket.on("connect-game", (connectKey) => {
-        const Game = Games[connectKey];
-        const telnet = new Game(ioSocket);
-
-        if (Game && !telnet.connected) {
-            telnet.connect(connectKey);
-        } else {
-            ioSocket.emit("error", {
-                key: "non-game",
-                message: `Trying to connect to non-existant game: "${connectKey}"`,
-                data: { games: Object.keys(Games) },
-            });
-        }
-    });
+    // Fetch game data
+    const telnet = new TestConnector(ioSocket);
+    telnet.connect("Test Game Key");
 });
 
-const PORT = 80;
+const PORT = 5555;
 server.listen(PORT, () => {
     console.log(`listening on *:${PORT}`);
 });
