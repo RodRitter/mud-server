@@ -4,19 +4,25 @@ const net = require("net");
 class BaseConnector {
     constructor(ioSocket) {
         this.ioSocket = ioSocket;
+        this.name = "";
         this.host = "127.0.0.1";
         this.port = 27;
-        this.game = null;
     }
 
-    connect(gameKey) {
+    connect(_host, _port, _name) {
+        this.host = _host;
+        this.port = _port;
+        this.name = _name;
+
+        console.log(_host, _port, _name);
+
         const telnetInput = (this.telnetInput = new TelnetInput({
             bufferSize: 16384,
         }));
         const telnetOutput = (this.telnetOutput = new TelnetOutput());
 
         let telnetSocket = (this.telnetSocket = net
-            .createConnection(this.port, this.host)
+            .createConnection(Number(this.port), this.host.trim())
             .setKeepAlive(true)
             .setNoDelay(true));
 
@@ -25,8 +31,7 @@ class BaseConnector {
 
         // Management Events
         telnetSocket.on("connect", () => {
-            this.game = gameKey;
-            this.onConnect(gameKey);
+            this.onConnect(this.name);
         });
 
         telnetSocket.on("close", () => {

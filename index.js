@@ -18,9 +18,12 @@ const io = new Server(server, {
 
 io.on("connection", (ioSocket) => {
     console.log("IO User Connected");
-    // Fetch game data
+    io.emit("socket-connected");
     const telnet = new TestConnector(ioSocket);
-    telnet.connect("Test Game Key");
+
+    ioSocket.on("game-connect", ({ host, port, name }) => {
+        telnet.connect(host, port, name);
+    });
 });
 
 const PORT = 5555;
