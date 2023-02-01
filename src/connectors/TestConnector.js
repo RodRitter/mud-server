@@ -9,8 +9,8 @@ class TestConnector extends BaseConnector {
     }
 
     onReceivedData(ansiData, ioSocket) {
-        // const html = convert.toHtml(ansiData);
-        const html = convertToHTML(ansiData);
+        const html = convert.toHtml(ansiData);
+        // const html = convertToHTML(ansiData);
         this.ioSocket.emit("buffer", html);
     }
 }
